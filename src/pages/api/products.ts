@@ -82,8 +82,12 @@ export default async (req, res) => {
       res.status(200).json(updatedProduct);
       break;  
     case 'DELETE':
+import { deleteProduct } from '@/lib/fauna';
+import stripe from '@/lib/stripe';
+
       const deletedId = req.query.id;
-      await deleteProduct(deletedId);
+      await deleteProduct(deletedId as string);
+      await stripe.products.del(deletedId as string);
       res.status(204).end();
       break;
     default:
